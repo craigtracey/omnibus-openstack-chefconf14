@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>The Whole Stack: Custom OpenStack with omnibus-openstack</title>
+
+		<meta name="description" content="ChefConf 2014">
+		<meta name="author" content="Craig Tracey">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<link rel="stylesheet" href="css/reveal.min.css">
+		<link rel="stylesheet" href="css/theme/default.css" id="theme">
+
+		<!-- For syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- If the query includes 'print-pdf', use the PDF print sheet -->
+		<script>
+			document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body style="background: -webkit-radial-gradient(center, circle cover, rgb(39, 62, 235) 0%, #000000 100%)">
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				<section>
+					<h1>The Whole Stack</h1>
+                    <h3>Custom OpenStack with environments with Chef<br>and omnibus-openstack</h3>
+                    <br>
+                    <h3>ChefConf 2014</h3>
+					<p>
+						<small><a href="http://scalehorizontally.com" style="color: rgb(32, 214, 229)">Craig Tracey</a> / <a href="http://twitter.com/craig_tracey" style="color: rgb(32, 214, 229)">@craig_tracey</a></small>
+					</p>
+				</section>
+
+				<section>
+					<h2>Who?</h2>
+                    <img src="img/craig2.jpg" class="fragment" data-fragment-index="2" style="border:none"/>
+	            </section>
+
+                <section>
+                    <img style="background: none; border: none; box-shadow: none;" src="img/openstack-logo.png" width=600/>
+                </section>
+
+                <section>
+                    <img src="img/sewing_machine.gif"/>
+                </section>
+
+                <section>
+                    <img src="img/sewing_machine_done.jpg" height="671px"/>
+                </section>
+
+                <section>
+                    <img src="img/openstack_arch.jpg" height="671px"/>
+                </section>
+
+                <section>
+                    <img src="img/yak_shaving.jpg" height="671px"/>
+                </section>
+
+                <section>
+                    <h1>Chef for OpenStack</h1>
+                    <span>
+                        <img src="img/Chef_Mark_Reg.png" style="border:none; background:none; box-shadow: none;" width=300/>
+                    </span>
+                    <span>
+                        <img style="background: none; border: none; box-shadow: none;" src="img/openstack-logo.png" width=400/>
+                    </span>
+                </section>
+
+                <section>
+                    <h2>Some History</h2>
+                    <div class="fragment">Rackspace Private Cloud</div><br>
+                    <div class="fragment">AT&T, Chef, Dell, HP, HubSpot, IBM, Korea Telecom, Rackspace, Suse, AT&T, and many, many more.</div><br>
+                    <div class="fragment">Stackforge May 2013<br>https://github.com/stackforge</div>
+
+                </section>
+
+                <section>
+                    <h2>Chef for OpenStack</h2>
+                    <div><span class="fragment">10 Service Cookbooks</span><span class="fragment">...and growing</span></div><br>
+                    <div class="fragment">3 Reference Cookbooks</div><br>
+                    <div class="fragment">Highly Composable</div><br>
+                    <div class="fragment">LWRP's</div><br>
+                    <div class="fragment">Continuous Integration Pipeline</div><br>
+                </section>
+
+                <section>
+                    <h2>Chef for OpenStack Support</h2>
+                    <div class="fragment">Grizzly, Havana, and now Icehouse</div><br>
+                    <div class="fragment">OS's: Ubuntu 12.04+, SLES 11+, and RHEL6+</div><br>
+                    <div class="fragment">Messaging: Rabbit and Qpid</div><br>
+                    <div class="fragment">Databases: MySQL, DB2, Postgres</div><br>
+                    <div class="fragment">"Hypervisors": KVM, LXC, QEMU</div><br>
+                    <div class="fragment">Networking: Neutron and Nova Networking</div><br>
+                    <div class="fragment">Block Storage: LVM and NetApp</div><br>
+                </section>
+
+                <section>
+                    <img src="img/oc-whippingup-sticker.png" style="background: none; border: none; box-shadow: none;"/>
+                </section>
+
+                <section>
+                    <h2>Too Many Moving Parts</h2>
+                </section>
+
+                <section>
+                    <h2>Controlling Your Own Destiny</h2>
+                    <h3 class="fragment">(or at least your product roadmap)</h3>
+                </section>
+
+                <section>
+                    <h2>Omnibus-OpenStack</h2>
+                    <div class="fragment">a configurable full-stack packaging framework for OpenStack</div>
+                </section>
+
+                <section>
+                    <h2>How does it work?</h2>
+                    <div class="fragment">wraps the omnibus we all know and love (v3.0.0)</div>
+                    <div class="fragment">configurable by way of a YAML manifest</div>
+                    <div class="fragment">builds all known system-level dependencies</div>
+                    <div class="fragment">a virtualenv for every declared OpenStack project</div>
+                </section>
+
+                <section>
+                    <h2>Build Support</h2>
+                    <div class="fragment">
+                        <a href=https://github.com/craigtracey/omnibus-openstack-build">https://github.com/craigtracey/omnibus-openstack-build</a>
+                        <ul>
+                            <li>Vagrant w/inline shell</li>
+                            <li>Heat</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>Sample Configuration</h2>
+                    <pre>
+ctracey@laptop:~/src/omnibus-openstack-build$ cat openstack-config.yml
+---
+keystone:
+  version: 'stable/havana'
+  source:
+    git: 'https://github.com/openstack/keystone.git'
+glance:
+  version: 'stable/havana'
+  source:
+    git: 'https://github.com/openstack/glance.git'
+...
+
+# These will all build the default 'master'
+keystoneclient:
+  source:
+    git: 'https://github.com/openstack/python-keystoneclient.git'
+glanceclient:
+  source:
+    git: 'https://github.com/openstack/python-glanceclient.git'
+                    </pre>
+                </section>
+
+                <section>
+                    <h2>Usage</h2>
+                    <pre>
+ctracey@laptop:~/src/omnibus-openstack-build$ bundle install
+...
+ctracey@laptop:~/src/omnibus-openstack-build$ bundle exec omnibus-openstack openstack-config.yml
+...
+                    </pre>
+                </section>
+
+                <section>
+                    <img style="background: none; border: none; box-shadow: none;" src="img/xtra-large-box.png"/>
+                </section>
+
+                <section>
+                    <h2>What still needs to be done?</h2>
+                    <div class="fragment">Extended platform support</div>
+                    <div class="fragment">Better documentation</div>
+                    <div class="fragment">TESTING!!! TESTING!!! TESTING!!!</div>
+                </section>
+
+                <section>
+                    <h2>Benefits</h2>
+                    <div class="fragment">service isolation</div>
+                    <div class="fragment">custom versioning</div>
+                    <div class="fragment">insulation from upstream</div>
+                    <div class="fragment">CD enablement</div>
+                    <div class="fragment">cross-platform (read: no lock-in)</div>
+                    <div class="fragment">configuration management agnostic</div>
+                </section>
+
+                <section>
+                    <h2>Possible Downsides</h2>
+                    <div class="fragment">insulation from upstream</div>
+                    <div class="fragment">some projects have very tight system-level dependencies</div>
+                    <div class="fragment">need to keep current</div>
+                </section>
+
+                <section>
+                    <h2>I Have A Package, Now What?</h2>
+                    <div class="fragment">
+                        <a href=https://github.com/craigtracey/cookbook-openstack-omnibus">https://github.com/craigtracey/cookbook-openstack-omnibus</a>
+                        <ul>
+                            <li>wrapper cookbook</li>
+                            <li>no stackforge cookbook dependencies</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>Lessons Learned</h2>
+                    <div class="fragment">adhere to omnibus principles</div>
+                    <div class="fragment"><strike>fork</strike></div>
+                </section>
+
+                <section>
+                    <h2>Where Next?</h2>
+                    <div class="fragment">locked pip dependencies</div>
+                    <div class="fragment">additional build options</div>
+                    <div class="fragment">nightly/blessed builds</div>
+                </section>
+
+                <section>
+                    <h1>thanks</h1>
+                </section>
+
+			</div>
+
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.min.js"></script>
+
+		<script>
+
+			// Full list of configuration options available here:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+				transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+
+				// Parallax scrolling
+				// parallaxBackgroundImage: 'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg',
+				// parallaxBackgroundSize: '2100px 900px',
+
+				// Optional libraries used to extend on reveal.js
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+					{ src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
