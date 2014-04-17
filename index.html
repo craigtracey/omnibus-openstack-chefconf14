@@ -42,7 +42,7 @@
                     <br>
                     <h3>ChefConf 2014</h3>
 					<p>
-						<small><a href="http://scalehorizontally.com" style="color: rgb(32, 214, 229)">Craig Tracey</a> / <a href="http://twitter.com/craig_tracey" style="color: rgb(32, 214, 229)">@craig_tracey</a></small>
+						<small><a target="_blank" href="http://scalehorizontally.com" style="color: rgb(32, 214, 229)">Craig Tracey</a> / <a target="_blank" href="http://twitter.com/craig_tracey" style="color: rgb(32, 214, 229)">@craig_tracey</a></small>
 					</p>
 				</section>
 
@@ -91,7 +91,7 @@
 
                 <section>
                     <h2>Chef for OpenStack</h2>
-                    <div><span class="fragment">10 Service Cookbooks</span><span class="fragment">...and growing</span></div><br>
+                    <div class="fragment">10 Service Cookbooks (and growing)</div><br>
                     <div class="fragment">3 Reference Cookbooks</div><br>
                     <div class="fragment">Highly Composable</div><br>
                     <div class="fragment">LWRP's</div><br>
@@ -101,16 +101,20 @@
                 <section>
                     <h2>Chef for OpenStack Support</h2>
                     <div class="fragment">Grizzly, Havana, and now Icehouse</div><br>
-                    <div class="fragment">OS's: Ubuntu 12.04+, SLES 11+, and RHEL6+</div><br>
+                    <div class="fragment">OS's: Ubuntu 12.04, SLES 11, and RHEL6</div><br>
                     <div class="fragment">Messaging: Rabbit and Qpid</div><br>
                     <div class="fragment">Databases: MySQL, DB2, Postgres</div><br>
-                    <div class="fragment">"Hypervisors": KVM, LXC, QEMU</div><br>
+                    <div class="fragment">"Hypervisors": KVM, LXC, QEMU, ESX, Hyper-V</div><br>
                     <div class="fragment">Networking: Neutron and Nova Networking</div><br>
                     <div class="fragment">Block Storage: LVM and NetApp</div><br>
                 </section>
 
                 <section>
                     <img src="img/oc-whippingup-sticker.png" style="background: none; border: none; box-shadow: none;"/>
+                </section>
+
+                <section>
+                    <img src="img/delight.png" style="background: none; border: none; box-shadow: none;"/>
                 </section>
 
                 <section>
@@ -129,21 +133,20 @@
 
                 <section>
                     <h2>How does it work?</h2>
-                    <div class="fragment">wraps the omnibus we all know and love (v3.0.0)</div>
-                    <div class="fragment">configurable by way of a YAML manifest</div>
-                    <div class="fragment">builds all known system-level dependencies</div>
-                    <div class="fragment">a virtualenv for every declared OpenStack project</div>
+                    <div class="fragment">wraps the omnibus we all know and love (v3.0.0)</div><br>
+                    <div class="fragment">configurable by way of a YAML manifest</div><br>
+                    <div class="fragment">builds all known system-level dependencies</div><br>
+                    <div class="fragment">a virtualenv for every declared OpenStack project</div><br>
                 </section>
 
                 <section>
                     <h2>Build Support</h2>
-                    <div class="fragment">
-                        <a href=https://github.com/craigtracey/omnibus-openstack-build">https://github.com/craigtracey/omnibus-openstack-build</a>
-                        <ul>
-                            <li>Vagrant w/inline shell</li>
-                            <li>Heat</li>
-                        </ul>
-                    </div>
+                    <ul>
+                        <li>continuous integration</li>
+                        <li>Vagrant w/inline shell</li>
+                        <li>OpenStack Heat</li>
+                    </ul><br><br><br>
+                    <a target="_blank" href="https://github.com/craigtracey/omnibus-openstack-build">https://github.com/craigtracey/omnibus-openstack-build</a>
                 </section>
 
                 <section>
@@ -174,9 +177,22 @@ glanceclient:
                 <section>
                     <h2>Usage</h2>
                     <pre>
-ctracey@laptop:~/src/omnibus-openstack-build$ bundle install
+ctracey@laptop:$ bundle install
 ...
-ctracey@laptop:~/src/omnibus-openstack-build$ bundle exec omnibus-openstack openstack-config.yml
+ctracey@laptop:$ bundle exec omnibus-openstack help build
+Commands:
+  omnibus-openstack build  m, --manifest=MANIFEST  # Build us some OpenStack
+  omnibus-openstack build help [COMMAND]           # Describe subcommands or one specific subcommand
+
+Options:
+  n, [--name=NAME]                  # Package name
+  i, [--install-path=INSTALL_PATH]  # Install path
+  d, [--description=DESCRIPTION]    # Package description
+  v, [--version=VERSION]            # Version for the resulting artifacts
+  c, [--cachedir=CACHEDIR]          # Directory to cache build elements to.
+                                    # Default: .cache
+
+ctracey@laptop:$ bundle exec omnibus-openstack build -m openstack-config.yml
 ...
                     </pre>
                 </section>
@@ -187,54 +203,147 @@ ctracey@laptop:~/src/omnibus-openstack-build$ bundle exec omnibus-openstack open
 
                 <section>
                     <h2>I Have A Package, Now What?</h2>
-                    <div class="fragment">
-                        <a href=https://github.com/craigtracey/cookbook-openstack-omnibus">https://github.com/craigtracey/cookbook-openstack-omnibus</a>
-                        <ul>
-                            <li>wrapper cookbook</li>
-                            <li>no stackforge cookbook dependencies</li>
-                        </ul>
+                    <ul>
+                        <li>wrapper cookbook</li>
+                        <li>no stackforge cookbook dependencies</li>
+                        <li>upstart and update-alternatives</li>
+                    </ul><br><br><br>
+                    <a style="font-size: 0.9em" target="_blank" href="https://github.com/craigtracey/cookbook-openstack-omnibus">https://github.com/craigtracey/cookbook-openstack-omnibus</a>
+                </section>
+
+                <section>
+                    <h2>Simple</h2>
+                    <div>
+                        <pre style="font-size: 0.4em;">
+...
+  config.vm.provision "chef_solo" do |chef|
+    chef.add_recipe "recipe[apt::default]"
+    chef.add_recipe "recipe[omnibus-openstack-reference::default]"
+    chef.add_recipe "recipe[openstack-omnibus::default]"
+    chef.add_recipe "recipe[openstack-identity::server]"
+    chef.add_recipe "recipe[openstack-image::api]"
+
+    chef.json = {
+      "mysql" => {
+        "bind_address" => "0.0.0.0",
+        "server_debian_password" => "password",
+        "server_root_password" => "password",
+        "server_repl_password" => "password"
+      },
+      "openstack" => {
+        "developer_mode" => true,
+        "memcached_servers" => [],
+
+        "omnibus" => {
+          "enabled_services" => %w(identity image.glance-api)
+        }
+      },
+      "omnibus-openstack-reference" => {
+        "apt_repo_url" => "#{ENV['OMNIBUS_APT_REPO']}",
+        "apt_key_server" => "#{ENV['OMNIBUS_APT_KEY_SERVER']}",
+        "apt_key" => "#{ENV['OMNIBUS_APT_KEY']}"
+      }
+    }
+  end
+...
+                        </pre>
                     </div>
                 </section>
 
                 <section>
+                    <h2>Simple</h2>
+                    <div>
+                        <pre style="font-size: 0.5em">
+...
+[2014-04-17T01:40:34+00:00] INFO: Chef Run complete in 975.393518569 seconds
+[2014-04-17T01:40:34+00:00] INFO: Running report handlers
+[2014-04-17T01:40:34+00:00] INFO: Report handlers complete
+ctracey@ctracey-desktop:~/omnibus-cookbook-reference$ vagrant ssh
+Welcome to Ubuntu 12.04.2 LTS (GNU/Linux 3.5.0-23-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com/
+
+118 packages can be updated.
+58 updates are security updates.
+
+Last login: Thu Apr 17 03:16:45 2014 from 10.0.2.2
+vagrant@ubuntu-12:~$ status keystone
+keystone start/running, process 19736
+vagrant@ubuntu-12:~$ status glance-api
+glance-api start/running, process 19654
+vagrant@ubuntu-12:~$
+                       </pre>
+                    </div><br>
+                    <a style="font-size: 0.8em" target="_blank" href="https://github.com/craigtracey/cookbook-openstack-omnibus-reference">https://github.com/craigtracey/cookbook-openstack-omnibus-reference</a>
+                </section>
+
+                <section>
                     <h2>What still needs to be done?</h2>
-                    <div class="fragment">Extended platform support</div>
-                    <div class="fragment">Better documentation</div>
+                    <div class="fragment">Extended platform support</div><br>
+                    <div class="fragment">Better documentation</div><br>
                     <div class="fragment">TESTING!!! TESTING!!! TESTING!!!</div>
                 </section>
 
                 <section>
                     <h2>Benefits</h2>
-                    <div class="fragment">service isolation</div>
-                    <div class="fragment">custom versioning</div>
-                    <div class="fragment">insulation from upstream</div>
-                    <div class="fragment">CD enablement</div>
-                    <div class="fragment">cross-platform (read: no lock-in)</div>
+                    <div class="fragment">service isolation</div><br>
+                    <div class="fragment">custom versioning</div><br>
+                    <div class="fragment">insulation from upstream</div><br>
+                    <div class="fragment">CD enablement</div><br>
+                    <div class="fragment">cross-platform (read: no lock-in)</div><br>
                     <div class="fragment">configuration management agnostic</div>
                 </section>
 
                 <section>
                     <h2>Possible Downsides</h2>
-                    <div class="fragment">insulation from upstream</div>
-                    <div class="fragment">some projects have very tight system-level dependencies</div>
-                    <div class="fragment">need to keep current</div>
+                    <div class="fragment">insulation from upstream</div><br>
+                    <div class="fragment">some projects have very tight system-level dependencies</div><br>
+                    <div class="fragment">need to keep current</div><br>
                 </section>
 
                 <section>
                     <h2>Lessons Learned</h2>
-                    <div class="fragment">adhere to omnibus principles</div>
-                    <div class="fragment"><strike>fork</strike></div>
+                    <div class="fragment">adhere to omnibus principles</div><br>
+                    <div class="fragment"><strike>fork</strike></div><br>
+                    <div class="fragment">ship all bits everywhere</div><br>
                 </section>
 
                 <section>
                     <h2>Where Next?</h2>
-                    <div class="fragment">locked pip dependencies</div>
-                    <div class="fragment">additional build options</div>
-                    <div class="fragment">nightly/blessed builds</div>
+                    <div class="fragment">locked pip dependencies</div><br>
+                    <div class="fragment">additional build options</div><br>
+                    <div class="fragment">nightly/blessed builds</div><br>
+                    <div class="fragment">containerization</div><br>
+                    <div class="fragment">autodiscovery of services</div>
                 </section>
 
                 <section>
+                    <h2>Help?</h2>
+                    <div>Freenode #openstack-chef</div><br>
+                    <div>Mailing List: <a target="_blank" href="http://bit.ly/1hQj52N">http://bit.ly/1hQj52N</a></div><br>
+                    <div>Weekly Hangout: 11AM Eastern Mondays</div><br>
+                </section>
+
+                <section>
+                    <h2>References</h2>
+                    <div style="font-size: 0.8em;">
+                        <div>this deck: <a target="_blank" href="http://bit.ly/QrKXyv">http://bit.ly/QrKXyv</a></div>
+                        <div>omnibus-openstack: <a target="_blank" href="http://bit.ly/1hQgAgW">http://bit.ly/1hQgAgW</a></div>
+                        <div>omnibus-openstack-build: <a target="_blank" href="http://bit.ly/1itIT3A">http://bit.ly/1itIT3A</a></div>
+                    </div>
+                    <br>
+                    <h3>Cookbooks</h3>
+                    <div style="font-size: 0.8em;">
+                        <div>chef for openstack: <a target="_blank" href="http://bit.ly/QrK9JQ">http://bit.ly/QrK9JQ</a></div>
+                        <div>cookbook-openstack-omnibus: <a target="_blank" href="http://bit.ly/1hZ9Vel">http://bit.ly/1hZ9Vel</a></div>
+                        <div>cookbook-openstack-omnibus-reference: <a target="_blank" href="http://bit.ly/1r2TVO6">http://bit.ly/1r2TVO6</a></div>
+                    </div>
+                </section>
+
+
+                <section>
                     <h1>thanks</h1>
+
                 </section>
 
 			</div>
